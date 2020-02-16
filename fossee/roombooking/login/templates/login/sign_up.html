@@ -1,0 +1,37 @@
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'login/signup.css' %}">
+</head>
+
+<body>
+
+<form method="post" style="border:1px solid #ccc">
+    {% csrf_token %}
+  <div class="container">
+    <h1>Sign Up</h1>
+    <p>Please fill in this form to create an account.</p>
+    <hr>
+
+    <label for="id_is_manager">Is manager:</label>
+    <select name="is_manager" id="id_is_manager">
+    <option value="True">Room manager</option>
+    <option value="False">Customer</option>
+    </select>
+    <br><br>
+    <label for="id_username">Username:</label> 
+    <input type="text" name="username" maxlength="150" id="id_username" autofocus required>
+    <label for="id_password1">Password:</label>
+    <input type="password" name="password1" id="id_password1" required> 
+    <label for="id_password2">Password confirmation:</label> 
+    <input type="password" name="password2" id="id_password2" required>
+    
+    <div class="clearfix">
+      <button type="submit" class="signupbtn">Sign Up</button>
+      <a href="/user/login"><button type="button" class="cancelbtn">Already a User</button></a>
+    </div>
+  </div>
+</form>
+
+</body>
+</html>
