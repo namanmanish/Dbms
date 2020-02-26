@@ -7,15 +7,15 @@ class Room(models.Model):
     def __str__(self):
         return self.name
 
-class time_slots(models.Model):
-    room_id=models.ForeignKey(Room,on_delete=models.CASCADE)
-    date=models.DateField()
+class Time_slots(models.Model):
     int_time=models.TimeField()
     end_time=models.TimeField()
 
 class Bookings(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    slot_id=models.ForeignKey(time_slots,on_delete=models.CASCADE)
+    slot_id=models.ForeignKey(Time_slots,on_delete=models.CASCADE)
+    date=models.DateField(null=True,default=None)
+    room=models.ForeignKey(Room,on_delete=models.CASCADE,null=True,default=None)
 
 
     
