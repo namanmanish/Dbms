@@ -1,6 +1,8 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'book/home.css' %}">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <body>
 <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
@@ -8,47 +10,26 @@
   <a href="#" class="w3-bar-item w3-button">Logout</a>
   <a href="/book/new/booking" class="w3-bar-item w3-button">Create new booking</a>
 </div>
-<style>
-    ol{
-  margin: 10px 0;
-}
-.btn {
-  border: none;
-  color: white;
-  padding: 5px 40px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius:40px/24px;
-}
-.horizontal{
-    padding-top: 50px;
-}
-.vertical{
-    padding-left: 20px;
-}
-.delete {background-color: #f44336;}  
-.delete:hover {background: #da190b;}
-.edit {background-color: #2196F3;} 
-.edit:hover {background: #0b7dda;}
-</style>
 <div style="margin-left:25%">
 
-<div class="w3-container w3-teal">
-  <h1>Your Bookings</h1>
-</div>
+    <div class="w3-container w3-teal">
+    <h1>Your Bookings</h1>
+    </div>
 
 
-<div class="w3-container">
-    {% for x in a %} 
-            <div class="horizontal" style="margin-right: 16px">  
-                <li> 
-            {{ x.0 }}
-            <a href="/book/edit/{{ x.1 }}"><button class="btn edit" style="margin-left: 25px">Edit</button></a>
-            <a href="/book/{{ x.1 }}" onclick="return confirm('Are you sure you want to Remove?');"><button class="btn delete" style="margin-left: 25px">Delete</button></a>
-        </li>    
-        </div>
-    {% endfor %}
-</div>
+    <div class="w3-container">
+        {% for x in a %} 
+                <div class="horizontal" style="margin-right: 16px">  
+                    <li> 
+                        {{ x.0 }}
+                        {% if x.2 %}
+                            <a href="/book/edit/{{ x.1 }}"><button class="btn edit" style="margin-left: 25px">Edit</button></a>
+                            <a href="/book/{{ x.1 }}" onclick="return confirm('Are you sure you want to Remove?');"><button class="btn delete" style="margin-left: 25px">Delete</button></a>
+                        {% endif %}
+                    </li>    
+                </div>
+        {% endfor %}
+    </div>
 </div>     
 </body>
 </html>

@@ -1,0 +1,21 @@
+ol{
+    margin: 10px 0;
+  }
+  .btn {
+    border: none;
+    color: white;
+    padding: 5px 40px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius:40px/24px;
+  }
+  .horizontal{
+      padding-top: 50px;
+  }
+  .vertical{
+      padding-left: 20px;
+  }
+  .delete {background-color: #f44336;}  
+  .delete:hover {background: #da190b;}
+  .edit {background-color: #2196F3;} 
+  .edit:hover {background: #0b7dda;}

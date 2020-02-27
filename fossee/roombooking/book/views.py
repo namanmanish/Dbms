@@ -4,6 +4,7 @@ from .forms import *
 from .models import *
 from django.contrib import messages
 from django.shortcuts import redirect
+import datetime
 
 
 def slot(request):
@@ -38,7 +39,7 @@ def home(request):
             b=b+str((x.date))+"  "
             b=b+str(x.slot_id.int_time)
             b=b+"  To  "+str(x.slot_id.end_time)
-            a.append((b,x.pk))
+            a.append((b,x.pk,bool(datetime.datetime.combine(x.date,x.slot_id.int_time)>datetime.datetime.now())))
             b=""
         print(a)
         contex={'a':a}
