@@ -124,3 +124,4 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'login.User'
 
 LOGIN_REDIRECT_URL = '/book'
+LOGOUT_REDIRECT_URL = '/user/login'

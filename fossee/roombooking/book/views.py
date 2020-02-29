@@ -5,7 +5,8 @@ from .models import *
 from django.contrib import messages
 from django.shortcuts import redirect
 import datetime
-
+from datetime import date
+from django.http import JsonResponse
 
 def slot(request):
     if not request.user.is_manager:
@@ -45,7 +46,27 @@ def home(request):
         contex={'a':a}
         return render(request,'book/home.html',contex)
     else:
-        return HttpResponse('<h1>Manager</h1>')
+        date1=date.today()
+        x=Bookings.objects.filter(date=date1)
+        a=[]
+        b={}
+        c=[]
+        for i in x:   
+            b["roomname"]=str(i.room.name)
+            b["status"]="Booked"
+            b["intt"]=str(i.slot_id.int_time)
+            b["endt"]=str(i.slot_id.end_time)
+            b["user"]=str(i.user)
+            a.append(b)
+            b={}
+        for i in Room.objects.all():
+            if i not in [z.room for z in x]:
+                b["roomname"]=str(i.name)
+                b["status"]="Vaccant"
+                c.append(b)
+                b={}
+        context={'a':a,'c':c,'date1':date1}
+        return render(request,'book/m_home.html',context)
 
 
 def book(request):
@@ -102,5 +123,30 @@ def cancle(request,id):
         return redirect('/book/')
     else:
         return HttpResponse('<h1>Manager</h1>')
+
+def ajax(request):
+    print("Hi")
+    date=request.GET.get('date')
+    x=Bookings.objects.filter(date=date)
+    a=[]
+    b=[]
+    for i in x:   
+        b.append(str(i.room.name))
+        b.append("Booked")
+        b.append(str(i.slot_id.int_time))
+        b.append(str(i.slot_id.end_time))
+        b.append(str(i.user))
+        a.append(b)
+        b=[]
+    for i in Room.objects.all():
+        if i not in [z.room for z in x]:
+            b.append(str(i.name))
+            b.append("Vaccant")
+            for y in range(3):
+                b.append("NA")
+            a.append(b)
+            b=[]
+    context={'a':a}
+    return JsonResponse(context)
 
 

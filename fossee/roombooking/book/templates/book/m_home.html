@@ -1,0 +1,100 @@
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'book/m_home.css' %}">
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $( function() {
+    $( "#id_date" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    } );
+    console.log("Hi");
+    $(document).on("change", "#id_date", function () {
+        date=this.value;
+        $.ajax({
+            url: '/book/ajax',
+            type: 'GET',
+            dataType: 'json',
+            data: {date: date},
+            success: function(response){
+                var a=response["a"];
+                console.log(a);
+                console.log(a.length);
+                var y = document.getElementById("myTable").rows.length;
+                z=document.getElementById("myTable");
+                for(var i=0;i<a.length && i<y-1;i++)
+                {
+                    var x = z.rows[i+1].cells;
+                    for(var j=0;j<5;j++)
+                    {
+                        x[j].innerHTML=a[i][j]
+                    }
+                }
+                for(i=y-1;i<a.length;i++)
+                {
+                    var y="<tr><td>";
+                    for(var k=0;k<4;k++)
+                    {
+                        y=y+a[i][k]+"</td><td>";
+                    }
+                    y=y+a[i][k]+"</td></tr>";
+                    z.innerHTML+=y;
+                }
+                for(i=a.length+1;i<y;i++)
+                {
+                    console.log(y-i);
+                    z.deleteRow(i);
+                }
+            }
+        });
+    });
+</script>
+</head>
+<body>
+
+<div class="sidenav">
+  <a href="#about">Logout</a>
+  <a href="#services">Create new time slot</a>
+</div>
+{% csrf_token %}
+<div class="main">
+    <h1>Status</h1>
+    <div id="element2">
+        <input type="text" id="id_date" class="date" value="{{ date1 }}">
+    </div>
+    <br>
+    <br>
+    <table style="width:100%" id="myTable">
+        <tr>
+            <th>Roomname</th>
+            <th>Status</th>
+            <th>Start time</th> 
+            <th>End time</th>
+            <th>User</th>
+        </tr>
+        {% for i in a %}
+            <tr>
+                <td>{{ i.roomname }}</td>
+                <td>{{ i.status }}</td>
+                <td>{{ i.intt }}</td>
+                <td>{{ i.endt }}</td>
+                <td>{{ i.user }}</td>
+            </tr>
+        {% endfor %}
+        {% for i in c %}
+            <tr>
+                <td>{{ i.roomname }}</td>
+                <td>{{ i.status }}</td>
+                <td>NA</td>
+                <td>NA</td>
+                <td>NA</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+   
+</body>
+</html> 

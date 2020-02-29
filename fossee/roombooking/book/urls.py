@@ -9,4 +9,5 @@ urlpatterns = [
     path('new/booking',book,name="book"),
     path('<int:id>', views.cancle),
     path('edit/<int:id>',views.edit),
+    path('ajax',views.ajax),
 ]

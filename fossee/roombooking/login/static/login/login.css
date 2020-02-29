@@ -44,18 +44,12 @@ img.avatar {
   padding: 16px;
 }
 
-span.psw {
-  float: right;
-  padding-top: 16px;
+.cancelbtn, .signupbtn {
+  float: left;
+  width: 50%;
 }
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-     display: block;
-     float: none;
-  }
-  .cancelbtn {
-     width: 100%;
-  }
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
 }
