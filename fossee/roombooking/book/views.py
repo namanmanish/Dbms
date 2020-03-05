@@ -30,12 +30,19 @@ def slot(request):
         context={'form':form,'x':x}
         return render(request,'book/slot_form.html',context)
 
+def date(i):
+    return i.date
+
 def home(request):
     if not request.user.is_manager:
-        booking=Bookings.objects.filter(user=request.user)
-        for i in booking:
-            print(i.slot_id.end_time)
-        print(request.user.username)
+        booking1=Bookings.objects.all()
+        booking1=sorted(booking1,key=date,reverse=True)
+        for i in booking1:
+            print(i.date)
+        booking=[]
+        for i in booking1:
+            if i.user==request.user:
+                booking.append(i)
         a=[]
         b=""
         for x in booking:
@@ -79,15 +86,16 @@ def book(request):
             if form.is_valid():
                 date=form.cleaned_data["date"]
                 time_slot=Time_slots.objects.get(pk=form.cleaned_data["time_slot"])
-                booking=Bookings.objects.filter(date=date).filter(slot_id=time_slot).room
+                booking=[i.room for i in Bookings.objects.filter(date=date).filter(slot_id=time_slot)]
                 for i in Room.objects.all():
                     if i not in booking:
                         break
                 obj=Bookings.objects.create(user=request.user,date=date,slot_id=time_slot,room=i)
                 obj.save()
                 messages.success(request, "Slot successfully added")
-                redirect('/book/')
+                return redirect('/book/')
             else:
+                print(form)
                 messages.MessageFailure(request, 'Not created') 
         form=bookings_form()
         context={'form':form}

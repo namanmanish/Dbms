@@ -7,14 +7,46 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $( function() {
-        $( "#id_date" ).datepicker();
+        $( "#id_date" ).datepicker({ dateFormat: 'yy-mm-dd' });
         } );
+        $(document).on("change", "#id_date", function () {
+        date=this.value;
+        $.ajax({
+            url: '/book/ajax/slot',
+            type: 'GET',
+            dataType: 'json',
+            data: {date: date},
+            success: function(response)
+            {
+                var a=response["a"];
+                console.log(a);
+                var q=a.length;
+                console.log(q);
+                z=document.getElementById("id_time_slot");
+                console.log(z.innerHTML);
+                var y="";
+                for(var i=0; i< a.length; i++)
+                { 
+                    y+="<option value=\""+a[i][2]+"\">"+a[i][0]+" -- "+a[i][1]+"</option>";
+                }
+                z.innerHTML=y;
+            }
+        });
+    });
     </script>
   </head>
 <form method="post">
     {% csrf_token %}
-    {{ form }}
+    <div class="container">
+        <h1>Booking Form</h1>
+        <label for="id_date" style="font-size: 25px; height: 150px;">Date:</label>
+        <input type="text" name="date" required id="id_date" style="width: 40%;" placeholder="yy:mm:ss">
+        <br>
+        <br>
+        {{ form.time_slot }}
+        <br><br>
     <div class="clearfix">
         <button type="submit" class="signupbtn">Create</button>
+    </div>
     </div>
 </form>
