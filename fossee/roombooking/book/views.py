@@ -8,6 +8,8 @@ import datetime
 from datetime import date
 from django.http import JsonResponse
 
+number_days=10  #Number of days prior which the booking can be done
+
 def slot(request):
     if not request.user.is_manager:
         return HttpResponse('<h1>Customer</h1>')
@@ -20,11 +22,13 @@ def slot(request):
                 obj=Time_slots.objects.create(int_time=ini_time,end_time=end_time)
                 obj.save()
                 messages.success(request, "Slot successfully added")
-                return redirect('')
+                return redirect('/book/')
             else:
                 messages.MessageFailure(request, 'Not created')  
         form=time_slot_form()
-        context={'form':form}
+        x=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+        print(x)
+        context={'form':form,'x':x}
         return render(request,'book/slot_form.html',context)
 
 def home(request):

@@ -17,6 +17,10 @@ class Bookings(models.Model):
     date=models.DateField(null=True,default=None)
     room=models.ForeignKey(Room,on_delete=models.CASCADE,null=True,default=None)
 
+class dependent(models.Model):
+    date=models.DateField()
+    time_slot=models.ForeignKey(Time_slots,on_delete=models.CASCADE)
+
 
     
 
