@@ -46,7 +46,7 @@
                 for(i=a.length+1;i<y;i++)
                 {
                     console.log(y-i);
-                    z.deleteRow(i);
+                    z.deleteRow(a.length+1);
                 }
             }
         });
@@ -56,13 +56,16 @@
 <body>
 
 <div class="sidenav">
+    <a href="/book/">Home</a>
     <a href="/book/new/slot">Create new time slot</a>
+    <a href="/book/edit/slots">Edit Time slots</a>
     <a href="/user/logout">Logout</a>
 </div>
 {% csrf_token %}
 <div class="main">
     <h1>Status</h1>
     <div id="element2">
+        <label for="id_date">Choose date:</label>
         <input type="text" id="id_date" class="date" value="{{ date1 }}">
     </div>
     <br>

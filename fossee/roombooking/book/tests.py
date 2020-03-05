@@ -68,3 +68,5 @@ class Testform(SimpleTestCase):
         form=time_slot_form(data=data)
         self.assertFalse(form.is_valid())
         self.assertEquals(len(form.errors),2)
+
+

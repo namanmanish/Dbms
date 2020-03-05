@@ -27,7 +27,6 @@ def slot(request):
                 messages.MessageFailure(request, 'Not created')  
         form=time_slot_form()
         x=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
-        print(x)
         context={'form':form,'x':x}
         return render(request,'book/slot_form.html',context)
 
@@ -150,6 +149,62 @@ def ajax(request):
                 b.append("NA")
             a.append(b)
             b=[]
+    context={'a':a}
+    return JsonResponse(context)
+
+def desc(request):
+    if request.user.is_manager:
+        dep=dependent.objects.all()
+        for i in range(len(dep)):
+            if datetime.datetime.now().date()<(dep[i].date):
+                break
+        x=dependent.objects.filter(date=dep[i-1].date)
+        time=[]
+        for i in x:
+            time.append(i.time_slot)
+        context={'time':time,'date1':datetime.datetime.now().date()}
+        return render(request,'book/time_slot.html',context)
+
+def edits(request,id):
+    if request.user.is_manager:
+        if request.method=="POST":
+            form=time_slot_form(request.POST)
+            if form.is_valid():
+                ini_time=form.cleaned_data["ini_time"]
+                end_time=form.cleaned_data["end_time"]
+                obj=Time_slots.objects.create(int_time=ini_time,end_time=end_time)
+                obj.save()
+                x=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+                for i in Time_slots.objects.all():
+                    if not i.pk==id:
+                        dependent.objects.create(date=x,time_slot=i).save()
+                messages.success(request, "Slot successfully added")
+                return redirect('/book/edit/slots')
+        slot=Time_slots.objects.get(pk=id)
+        x=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+        print(x)
+        form=time_slot_form()
+        context={'form':form,'x':x,'in':slot.int_time,'out':slot.end_time}
+        return render(request,'book/slot_form.html',context)
+        
+def ajaxs(request):
+    date=request.GET.get('date')
+    print(date)
+    dep=dependent.objects.all()
+    print(dep[0].date)
+    for i in range(len(dep)):
+        if str(date)<str(dep[i].date):
+            break
+    x=dependent.objects.filter(date=dep[i-1].date)
+    a=[]
+    b=[]
+    for i in x:
+        b.append(i.time_slot.int_time)
+        b.append(i.time_slot.end_time)
+        b.append(i.time_slot.pk)
+        a.append(b)
+        b=[]
+    print(a)
     context={'a':a}
     return JsonResponse(context)
 

@@ -9,5 +9,8 @@ urlpatterns = [
     path('new/booking',book,name="book"),
     path('<int:id>', views.cancle,name='cancle'),
     path('edit/<int:id>',views.edit),
+    path('edit/slots',views.desc),
+    path('edit/slot/<int:id>',views.edits),
     path('ajax',views.ajax),
+    path('ajax/slot',views.ajaxs),
 ]
