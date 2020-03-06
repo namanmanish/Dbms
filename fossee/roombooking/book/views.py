@@ -56,7 +56,7 @@ def home(request):
         contex={'a':a}
         return render(request,'book/home.html',contex)
     else:
-        date1=date.today()
+        date1=datetime.datetime.now().date()
         x=Bookings.objects.filter(date=date1)
         a=[]
         b={}
@@ -166,11 +166,12 @@ def desc(request):
         for i in range(len(dep)):
             if datetime.datetime.now().date()<(dep[i].date):
                 break
-        x=dependent.objects.filter(date=dep[i-1].date)
+        x=dependent.objects.filter(date=dep[max(i-1,0)].date)
         time=[]
         for i in x:
             time.append(i.time_slot)
-        context={'time':time,'date1':datetime.datetime.now().date()}
+        x=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+        context={'time':time,'date1':datetime.datetime.now().date(),'date2':x}
         return render(request,'book/time_slot.html',context)
 
 def edits(request,id):
@@ -195,6 +196,18 @@ def edits(request,id):
         context={'form':form,'x':x,'in':slot.int_time,'out':slot.end_time}
         return render(request,'book/slot_form.html',context)
         
+def cancles(request,id):
+    x1=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+    dep=dependent.objects.all()
+    for i in range(len(dep)):
+        if datetime.datetime.now().date()<(dep[i].date):
+            break
+    y=dependent.objects.filter(date=dep[max(i-1,0)].date)
+    for i in y:
+        if not i.time_slot.pk==id:
+            dependent.objects.create(date=x1,time_slot=i.time_slot).save()
+    return redirect('/book/edit/slots')
+
 def ajaxs(request):
     date=request.GET.get('date')
     print(date)
@@ -203,7 +216,7 @@ def ajaxs(request):
     for i in range(len(dep)):
         if str(date)<str(dep[i].date):
             break
-    x=dependent.objects.filter(date=dep[i-1].date)
+    x=dependent.objects.filter(date=dep[max(i-1,0)].date)
     a=[]
     b=[]
     for i in x:

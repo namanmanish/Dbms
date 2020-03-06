@@ -13,4 +13,5 @@ urlpatterns = [
     path('edit/slot/<int:id>',views.edits),
     path('ajax',views.ajax),
     path('ajax/slot',views.ajaxs),
+    path('cancle/<int:id>',views.cancles),
 ]

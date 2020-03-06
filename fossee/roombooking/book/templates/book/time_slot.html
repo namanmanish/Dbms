@@ -1,6 +1,6 @@
 {% load static %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="{% static 'book/m_home.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'book/man.css' %}">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -42,7 +42,8 @@
                     console.log(x[0].innerHTML);
                     x[0].innerHTML=a[i-1][0];
                     x[1].innerHTML=a[i-1][1];
-                    x[2].innerHTML="<td><a href=\"/book/edit/slot/"+a[i-1][2]+"\"><button type=\"button\" data-toggle=\"modal\" data-target=\"#edit\" data-uid=\"1\" class=\"update btn btn-warning btn-sm\"><span class=\"glyphicon glyphicon-pencil\"></span></button>";
+                    x[2].innerHTML="<td><button type=\"button\" data-toggle=\"modal\" data-target=\"#edit\" data-uid=\"1\" class=\"update btn btn-warning btn-sm\"><span class=\"glyphicon glyphicon-pencil\"></span></button>";
+                    x[3].innerHTML="</td></a><td><button type=\"button\" data-toggle=\"modal\" data-target=\"#delete\" data-uid=\"1\" class=\"delete btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-trash\"></span></button></td>";
                 }
                 for(i=a.length+1;i<y;i++)
                 {
@@ -54,10 +55,10 @@
                     var y="<tr><td>";
                     y=y+a[i][0]+"</td><td>";
                     y=y+a[i][1]+"</td>";
-                    y=y+"<td><a href=\"/book/edit/slot/"+a[i][2]+"\"><button type=\"button\" data-toggle=\"modal\" data-target=\"#edit\" data-uid=\"1\" class=\"update btn btn-warning btn-sm\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td></a><td><button type=\"button\" data-toggle=\"modal\" data-target=\"#delete\" data-uid=\"1\" class=\"delete btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-trash\"></span></button></td>";
+                    y=y+"<td><button type=\"button\" data-toggle=\"modal\" data-target=\"#edit\" data-uid=\"1\" class=\"update btn btn-warning btn-sm\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td></a><td><button type=\"button\" data-toggle=\"modal\" data-target=\"#delete\" data-uid=\"1\" class=\"delete btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-trash\"></span></button></td>";
                     z.innerHTML+=y;
                 }
-
+                console.log(z.innerHTML);
             }
         });
     });
@@ -92,11 +93,13 @@
                     <tr>
                         <td id="f1">{{ i.int_time|time:"H:i" }}</td>
                         <td id="l1">{{ i.end_time|time:"H:i" }}</td>
-                        <td><a href="/book/edit/slot/{{ i.pk }}"><button type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></button></td></a>
-                        <td><button type="button" data-toggle="modal" data-target="#delete" data-uid="1" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td>
+                        <td><a href="/book/edit/slot/{{ i.pk }}"><button type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></button></a></td>
+                        <td><a href="/book/cancle/{{ i.pk }}"><button type="button" data-toggle="modal" data-target="#delete" data-uid="1" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></a></td>
                     </tr>
                 {% endfor %}
             </table>
         </div>
+        <h3>Please Note: The changes will be applied form {{ date2 }}</h3>
+        <h3>You can only make changes while you are on current date you can only view once you change the date</h3>
     </div>
 </div>
