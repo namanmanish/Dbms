@@ -6,7 +6,9 @@ from django.contrib import messages
 from django.shortcuts import redirect
 import datetime
 from datetime import date
+import json
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 number_days=10  #Number of days prior which the booking can be done
 
@@ -229,4 +231,13 @@ def ajaxs(request):
     context={'a':a}
     return JsonResponse(context)
 
-
+@csrf_exempt 
+def slot_api(request):
+    if request.method=="POST":
+        data=request.body.decode('utf-8')
+        received_json_data = json.loads(data)
+        time1=received_json_data["int_time"]
+        time2=received_json_data["end_time"]
+        x=Time_slots.objects.create(int_time=time1,end_time=time2)
+        x.save()
+        return JsonResponse({'begin':x.int_time,'end':x.end_time})

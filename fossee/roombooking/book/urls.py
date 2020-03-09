@@ -14,4 +14,5 @@ urlpatterns = [
     path('ajax',views.ajax),
     path('ajax/slot',views.ajaxs),
     path('cancle/<int:id>',views.cancles),
+    path('api',views.slot_api),
 ]
