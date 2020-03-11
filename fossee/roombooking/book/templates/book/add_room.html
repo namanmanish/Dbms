@@ -1,0 +1,18 @@
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="{% static 'login/signup.css' %}">
+</head>
+<body>
+  <form method="post" style="border:1px solid #ccc">
+      {% csrf_token %}
+    <div class="container">
+      <h1>Room Creation Form</h1>
+      <label for="id_name">Name:</label>&nbsp;&nbsp;
+      <input type="text" name="name" required maxlength="25" id="id_name">
+      <div class="clearfix">
+        <button type="submit" class="signupbtn">Create</button>
+      </div>
+    </div>
+  </form>
+</body>

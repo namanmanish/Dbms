@@ -21,6 +21,7 @@ class dependent(models.Model):
     date=models.DateField()
     time_slot=models.ForeignKey(Time_slots,on_delete=models.CASCADE)
 
-
+class advance(models.Model):
+    no_days=models.IntegerField()
     
 

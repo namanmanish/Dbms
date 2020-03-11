@@ -14,3 +14,10 @@ class bookings_form(forms.Form):
     date=forms.DateField()
     time_slot=forms.ChoiceField(choices=MY_CHOICES)
 
+
+class room_form(forms.Form):
+    name=forms.CharField(max_length=25)
+
+
+class max_d(forms.Form):
+    days=forms.IntegerField()

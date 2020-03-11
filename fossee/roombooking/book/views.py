@@ -10,7 +10,6 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-number_days=10  #Number of days prior which the booking can be done
 
 def slot(request):
     if not request.user.is_manager:
@@ -28,7 +27,7 @@ def slot(request):
             else:
                 messages.MessageFailure(request, 'Not created')  
         form=time_slot_form()
-        x=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+        x=datetime.datetime.now().date()+datetime.timedelta(days=advance.objects.get(pk=1).no_days)
         context={'form':form,'x':x}
         return render(request,'book/slot_form.html',context)
 
@@ -100,7 +99,7 @@ def book(request):
                 print(form)
                 messages.MessageFailure(request, 'Not created') 
         form=bookings_form()
-        context={'form':form}
+        context={'form':form,'max':advance.objects.get(pk=1).no_days}
         return render(request,'book/book_form.html',context)
     else:
         return HttpResponse('<h1>Manager</h1>')
@@ -172,7 +171,7 @@ def desc(request):
         time=[]
         for i in x:
             time.append(i.time_slot)
-        x=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+        x=datetime.datetime.now().date()+datetime.timedelta(days=advance.objects.get(pk=1).no_days)
         context={'time':time,'date1':datetime.datetime.now().date(),'date2':x}
         return render(request,'book/time_slot.html',context)
 
@@ -185,21 +184,21 @@ def edits(request,id):
                 end_time=form.cleaned_data["end_time"]
                 obj=Time_slots.objects.create(int_time=ini_time,end_time=end_time)
                 obj.save()
-                x=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+                x=datetime.datetime.now().date()+datetime.timedelta(days=advance.objects.get(pk=1).no_days)
                 for i in Time_slots.objects.all():
                     if not i.pk==id:
                         dependent.objects.create(date=x,time_slot=i).save()
                 messages.success(request, "Slot successfully added")
                 return redirect('/book/edit/slots')
         slot=Time_slots.objects.get(pk=id)
-        x=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+        x=datetime.datetime.now().date()+datetime.timedelta(days=advance.objects.get(pk=1).no_days)
         print(x)
         form=time_slot_form()
         context={'form':form,'x':x,'in':slot.int_time,'out':slot.end_time}
         return render(request,'book/slot_form.html',context)
         
 def cancles(request,id):
-    x1=datetime.datetime.now().date()+datetime.timedelta(days=number_days)
+    x1=datetime.datetime.now().date()+datetime.timedelta(days=advance.objects.get(pk=1).no_days)
     dep=dependent.objects.all()
     for i in range(len(dep)):
         if datetime.datetime.now().date()<(dep[i].date):
@@ -231,9 +230,41 @@ def ajaxs(request):
     context={'a':a}
     return JsonResponse(context)
 
+def add_room(request):
+    if request.user.is_manager:
+        if request.method=="POST":
+            form=room_form(request.POST)
+            if form.is_valid():
+                name=form.cleaned_data["name"]
+                Room.objects.create(name=name).save()
+                return redirect('/book/')
+        form=room_form()
+        contex={'form':form}
+        return render(request,'book/add_room.html',contex)
+    else:
+        return HttpResponse('<h1>Customer</h1>')
+
+def change_days(request):
+    if request.user.is_manager:
+        if request.method=="POST":
+            form=max_d(request.POST)
+            if form.is_valid():
+                days=form.cleaned_data["days"]
+                obj=advance.objects.get(pk=1)
+                obj.no_days=days
+                obj.save()
+                return redirect('/book/')
+        form=max_d()
+        contex={'form':form}
+        return render(request,'book/change_days.html',contex)
+    else:
+        return HttpResponse('<h1>Customer</h1>')
+
+
 @csrf_exempt 
 def slot_api(request):
     if request.method=="POST":
+        print(request.body)
         data=request.body.decode('utf-8')
         received_json_data = json.loads(data)
         time1=received_json_data["int_time"]
@@ -241,3 +272,13 @@ def slot_api(request):
         x=Time_slots.objects.create(int_time=time1,end_time=time2)
         x.save()
         return JsonResponse({'begin':x.int_time,'end':x.end_time})
+    else:
+        data=Time_slots.objects.all()
+        a=[]
+        b={}
+        for i in data:
+            b["start"]=i.int_time
+            b["end"]=i.end_time
+            a.append(b)
+            b={}
+        return JsonResponse({'a':a})

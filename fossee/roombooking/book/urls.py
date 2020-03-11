@@ -15,4 +15,6 @@ urlpatterns = [
     path('ajax/slot',views.ajaxs),
     path('cancle/<int:id>',views.cancles),
     path('api',views.slot_api),
+    path('new/room',views.add_room),
+    path('change',views.change_days),
 ]

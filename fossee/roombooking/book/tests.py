@@ -6,6 +6,7 @@ from login.models import *
 from .models import *
 from django.contrib.auth import authenticate
 from .forms import *
+import requests
 
 class Testurls(SimpleTestCase):
     
@@ -69,4 +70,16 @@ class Testform(SimpleTestCase):
         self.assertFalse(form.is_valid())
         self.assertEquals(len(form.errors),2)
 
+class Testapi(TestCase):
+    
+    def test_api_get(self):
+        response=self.client.get('/book/api')
+        self.assertEquals(response.status_code,200)
+
+    def test_api_post(self):
+        url = '/book/api'
+        x={'int_time':"8:00:00",'end_time':"10:00:00"}
+        response = self.client.post(url,json.dumps(x),content_type="application/json")
+        self.assertEquals(response.status_code,200)
+        self.assertEquals(len(Time_slots.objects.all()),1)
 
