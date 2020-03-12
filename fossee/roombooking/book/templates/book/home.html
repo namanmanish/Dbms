@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load nbsp %}
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="{% static 'book/home.css' %}">
@@ -21,7 +22,7 @@
         {% for x in a %} 
                 <div class="horizontal" style="margin-right: 16px">  
                     <li> 
-                        {{ x.0 }}
+                        {{ x.0|nbsp }}
                         {% if x.2 %}
                             <a href="/book/edit/{{ x.1 }}"><button class="btn edit" style="margin-left: 25px">Edit</button></a>
                             <a href="/book/{{ x.1 }}" onclick="return confirm('Are you sure you want to Remove?');"><button class="btn delete" style="margin-left: 25px">Delete</button></a>

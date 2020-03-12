@@ -68,6 +68,7 @@
     <a href="/book/new/room">Add Room</a>
     <a href="/book/new/slot">Create new time slot</a>
     <a href="/book/edit/slots">Edit Time slots</a>
+    <a href="/book/change">Days for advance booking</a>
     <a href="/user/logout">Logout</a>
 </div>
 {% csrf_token %}
@@ -101,6 +102,10 @@
             </table>
         </div>
         <h3>Please Note: The changes will be applied form {{ date2 }}</h3>
-        <h3>You can only make changes while you are on current date you can only view once you change the date</h3>
+        {% if y %}
+            <h3>You can only make changes while you are on current date you can only view once you change the date</h3>
+        {% else %}
+            <h3>Time slot can only be modified once a day</h3>
+        {% endif %}
     </div>
 </div>

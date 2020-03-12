@@ -52,13 +52,12 @@
     });
 </script>
 </head>
-<body>
-
 <div class="sidenav">
     <a href="/book/">Home</a>
     <a href="/book/new/room">Add Room</a>
     <a href="/book/new/slot">Create new time slot</a>
     <a href="/book/edit/slots">Edit Time slots</a>
+    <a href="/book/change">Days for advance booking</a>
     <a href="/user/logout">Logout</a>
 </div>
 {% csrf_token %}
@@ -98,6 +97,4 @@
         {% endfor %}
     </table>
 </div>
-   
-</body>
 </html> 

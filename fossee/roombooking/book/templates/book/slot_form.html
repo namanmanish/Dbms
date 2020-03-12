@@ -10,9 +10,9 @@
       <h1>Slot Creation Form</h1>
   <p><b>Please Note</b>: The following changes will be applied form {{ x }}</p>
       <label for="id_ini_time">Start time:</label>
-      <input type="text" name="ini_time" id="id_ini_time" value="{{ in|time:"H:i:s" }}" required>
+      <input type="text" name="ini_time" id="id_ini_time" value="{{ in|time:"H:i:s" }}" placeholder="hh:mm:ss" required>
       <label for="id_end_time">End time:</label>
-      <input type="text" name="end_time" id="id_end_time" value="{{ out|time:"H:i:s" }}" required>
+      <input type="text" name="end_time" id="id_end_time" value="{{ out|time:"H:i:s" }}" placeholder="hh:mm:ss" required>
       <div class="clearfix">
         <button type="submit" class="signupbtn">Create</button>
       </div>

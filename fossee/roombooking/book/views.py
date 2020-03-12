@@ -47,8 +47,8 @@ def home(request):
         a=[]
         b=""
         for x in booking:
-            b=b+str(x.room.name)+" "
-            b=b+str((x.date))+"  "
+            b=b+str(x.room.name)+"  "
+            b=b+str((x.date.strftime('%A %d %B %Y')))+"  "
             b=b+str(x.slot_id.int_time)
             b=b+"  To  "+str(x.slot_id.end_time)
             a.append((b,x.pk,bool(datetime.datetime.combine(x.date,x.slot_id.int_time)>datetime.datetime.now())))
@@ -172,7 +172,10 @@ def desc(request):
         for i in x:
             time.append(i.time_slot)
         x=datetime.datetime.now().date()+datetime.timedelta(days=advance.objects.get(pk=1).no_days)
-        context={'time':time,'date1':datetime.datetime.now().date(),'date2':x}
+        y=1
+        if datetime.datetime.now().date() in [z.date for z in dep]:
+            y=0
+        context={'time':time,'date1':datetime.datetime.now().date(),'date2':x,'y':y}
         return render(request,'book/time_slot.html',context)
 
 def edits(request,id):
@@ -255,7 +258,7 @@ def change_days(request):
                 obj.save()
                 return redirect('/book/')
         form=max_d()
-        contex={'form':form}
+        contex={'form':form,'days':advance.objects.get(pk=1).no_days}
         return render(request,'book/change_days.html',contex)
     else:
         return HttpResponse('<h1>Customer</h1>')
