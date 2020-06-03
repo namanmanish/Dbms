@@ -17,12 +17,12 @@ pip install -r requirements.txt
 ```bash
 cd roombooking
 python manage.py runserver
+In your web browser go to localhost:8000/user/sign_up
 ```
 ## Running the tests
 ```bash
 cd roombooking
 python manage.py test book
-In your web browser go to localhost:8000/user/sign_up
 ```
 ## Customer scenarios
 A new user can signup and if already a user he/she can login<br/>
