@@ -7,7 +7,8 @@ import datetime
 from django.contrib.auth import logout
 from django.contrib import messages
 from .forms import *
-
+import json
+from django.views.decorators.csrf import csrf_exempt
 def sign_up(request):
     if request.method=="POST":
         form=RegistrationForm(request.POST)
