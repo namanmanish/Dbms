@@ -1,4 +1,4 @@
-# Classroom Management
+# Classroom Management System
 
 #### Install components
 ```bash
