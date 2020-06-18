@@ -1,5 +1,10 @@
 # Classroom Management System
 
+## Team Info
+Naman Manish Trivedi (181CO156)<br/>
+K V Sumanth Reddy (181CO225)
+
+
 #### Install components
 ```bash
 sudo apt-get update
@@ -50,8 +55,4 @@ data : Array of dictionaries containing all the time slots<br/>
 requestdataformat : json (as raw data in body of request)<br/>
 sample : {"int_time":some_value,"end_time":some_value}<br/>
 responsedataformat : json (the object which is created)<br/>
-
-## Team Info
-Naman Manish Trivedi (181CO156)<br/>
-K V Sumanth Reddy (181CO225)
 
